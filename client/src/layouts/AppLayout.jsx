@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "../components/Side.jsx";
+import { Sidebar, BottomNav, MobileHeader } from "../components/Side.jsx";
 
 export const AppLayout = () => {
   return (
-    <div className="flex min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-background">
+      <MobileHeader />
       <Sidebar />
-      <main className="flex-1 overflow-auto ml-16">
+      <main className="min-h-screen pt-14 pb-16 md:pt-0 md:pb-0 md:ml-16">
         <Outlet />
       </main>
+      <BottomNav />
     </div>
   );
 };
-
