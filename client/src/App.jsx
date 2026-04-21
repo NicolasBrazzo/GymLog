@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard.jsx";
 import { AppLayout } from "./layouts/AppLayout.jsx";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ParseSheet } from "./pages/ParseSheet.jsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route element={<AppLayout />}>
                   <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/parse" element={<ParseSheet />} />
                 </Route>
               </Route>
             </Routes>
