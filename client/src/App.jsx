@@ -7,6 +7,8 @@ import { AppLayout } from "./layouts/AppLayout.jsx";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ParseSheet } from "./pages/ParseSheet.jsx";
+import { WorkoutSheets } from "./pages/WorkoutSheets.jsx";
+import { Profile } from "./pages/Profile.jsx";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ function App() {
                 <Route element={<AppLayout />}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/parse" element={<ParseSheet />} />
+                  <Route path="/workout-sheets" element={<WorkoutSheets />} />
+                  <Route path="/profile" element={<Profile />} />
                 </Route>
               </Route>
             </Routes>

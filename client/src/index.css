@@ -6,52 +6,51 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand palette */
-  --background: #FEFCFC;
-  --foreground: #212327;
-  --card: #FEFCFC;
-  --card-foreground: #212327;
-  --popover: #FEFCFC;
-  --popover-foreground: #212327;
-  --primary: #EF6149;
+  /* Always dark — Design.md tokens */
+  --background: #18191C;
+  --foreground: #FEFCFC;
+  --card: #2A2D33;
+  --card-foreground: #FEFCFC;
+  --popover: #2A2D33;
+  --popover-foreground: #FEFCFC;
+  --primary: #F1452A;
   --primary-foreground: #FEFCFC;
-  --secondary: #f0e8e8;
-  --secondary-foreground: #212327;
-  --muted: #f0e8e8;
-  --muted-foreground: #7a7578;
-  --accent: #F3745A;
+  --secondary: #212327;
+  --secondary-foreground: #FEFCFC;
+  --muted: #1E2023;
+  --muted-foreground: rgba(254, 252, 252, 0.40);
+  --accent: #EF6149;
   --accent-foreground: #FEFCFC;
   --destructive: #F1452A;
-  --border: #e4d8d8;
-  --input: #e4d8d8;
-  --ring: #EF6149;
+  --border: rgba(254, 252, 252, 0.10);
+  --input: rgba(254, 252, 252, 0.08);
+  --ring: #F1452A;
   --radius: 0.75rem;
 
-  /* Sidebar — always dark */
-  --sidebar: #212327;
+  /* Extra Design.md tokens (for inline styles) */
+  --surface: #1E2023;
+  --surface-raised: #3A3D44;
+  --border-strong: rgba(254, 252, 252, 0.15);
+  --ink-2: rgba(254, 252, 252, 0.75);
+  --blue: #4F8EF7;
+  --green: #3DB882;
+
+  /* Sidebar */
+  --sidebar: #1E2023;
   --sidebar-foreground: #FEFCFC;
-  --sidebar-primary: #EF6149;
+  --sidebar-primary: #F1452A;
   --sidebar-primary-foreground: #FEFCFC;
-  --sidebar-accent: rgba(239, 97, 73, 0.15);
-  --sidebar-accent-foreground: #EF6149;
-  --sidebar-border: rgba(254, 252, 252, 0.08);
-  --sidebar-ring: #EF6149;
+  --sidebar-accent: rgba(241, 69, 42, 0.15);
+  --sidebar-accent-foreground: #F1452A;
+  --sidebar-border: rgba(254, 252, 252, 0.10);
+  --sidebar-ring: #F1452A;
 
   /* Chart */
-  --chart-1: #EF6149;
-  --chart-2: #F3745A;
-  --chart-3: #F1452A;
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-}
-
-@theme {
-  --color-accent: var(--accent);
-  --color-box-bg: var(--foreground);
-}
-
-body {
-  @apply w-screen h-screen;
+  --chart-1: #F1452A;
+  --chart-2: #EF6149;
+  --chart-3: #F3745A;
+  --chart-4: #4F8EF7;
+  --chart-5: #3DB882;
 }
 
 html,
@@ -61,66 +60,36 @@ body {
   overflow-x: hidden;
 }
 
-h1 {
-  font-size: clamp(1.5rem, 5vw, 2.2rem);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-h2 {
-  font-size: clamp(1.1rem, 4vw, 1.5rem);
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-p,
-label {
-  font-weight: normal;
-}
-
 @layer utilities {
   .primary-button {
-    @apply rounded-xl px-5 py-3
-         bg-primary text-primary-foreground text-sm font-semibold
-         shadow-sm
+    @apply inline-flex items-center justify-center
+         rounded-[10px] px-5
+         bg-primary text-primary-foreground
+         text-[17px] font-bold
          transition-all duration-150
          hover:opacity-90
-         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-         active:translate-y-px active:opacity-95;
+         active:translate-y-px active:opacity-95
+         disabled:opacity-40 disabled:cursor-not-allowed;
+    height: 42px;
   }
 
-  .box {
-    @apply bg-muted rounded-xl py-5 px-4;
+  .ghost-button {
+    @apply inline-flex items-center justify-center
+         rounded-[10px] px-5
+         text-[15px] font-normal text-foreground
+         transition-all duration-150
+         hover:opacity-80;
+    height: 42px;
+    background: #2E3238;
+    border: 1.5px solid rgba(254, 252, 252, 0.15);
   }
-}
 
-.dark {
-  --background: #212327;
-  --foreground: #FEFCFC;
-  --card: #2a2d33;
-  --card-foreground: #FEFCFC;
-  --popover: #2a2d33;
-  --popover-foreground: #FEFCFC;
-  --primary: #EF6149;
-  --primary-foreground: #FEFCFC;
-  --secondary: #2e3137;
-  --secondary-foreground: #FEFCFC;
-  --muted: #2e3137;
-  --muted-foreground: #9d9aa3;
-  --accent: #F3745A;
-  --accent-foreground: #FEFCFC;
-  --destructive: #F1452A;
-  --border: rgba(254, 252, 252, 0.1);
-  --input: rgba(254, 252, 252, 0.08);
-  --ring: #EF6149;
-  --sidebar: #1a1c1f;
-  --sidebar-foreground: #FEFCFC;
-  --sidebar-primary: #EF6149;
-  --sidebar-primary-foreground: #FEFCFC;
-  --sidebar-accent: rgba(239, 97, 73, 0.2);
-  --sidebar-accent-foreground: #EF6149;
-  --sidebar-border: rgba(254, 252, 252, 0.08);
-  --sidebar-ring: #EF6149;
+  .gym-card {
+    background: #2A2D33;
+    border: 1.5px solid rgba(254, 252, 252, 0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
 }
 
 @theme inline {
@@ -171,8 +140,6 @@ label {
   }
   body {
     @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
+    font-family: 'Inter Variable', sans-serif;
   }
 }

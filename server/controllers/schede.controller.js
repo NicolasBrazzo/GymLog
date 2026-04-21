@@ -2,8 +2,19 @@ const express = require("express");
 const multer = require("multer");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const protect = require("../middleware/auth");
+const { getSchedeByUserId, saveScheda } = require("../models/schede.model");
 
 const router = express.Router();
+
+router.get("/", protect, async (req, res) => {
+  try {
+    const schede = await getSchedeByUserId(req.user.sub);
+    return res.json({ ok: true, data: schede });
+  } catch (err) {
+    console.error("GET SCHEDE ERROR:", err);
+    return res.status(500).json({ ok: false, error: "Errore nel recupero delle schede" });
+  }
+});
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -118,6 +129,32 @@ router.post("/parse", protect, upload.single("file"), async (req, res) => {
     }
     console.error("PARSE ERROR:", err);
     return res.status(500).json({ ok: false, error: "Errore durante il parsing" });
+  }
+});
+
+router.post("/import", protect, async (req, res) => {
+  try {
+    const { scheda, name, startDate, endDate } = req.body;
+
+    if (!scheda || !Array.isArray(scheda.giorni)) {
+      return res.status(400).json({ ok: false, error: "JSON non valido: campo 'scheda.giorni' mancante" });
+    }
+    if (!name || !startDate) {
+      return res.status(400).json({ ok: false, error: "Campi obbligatori: name, startDate" });
+    }
+
+    const result = await saveScheda(req.user.sub, {
+      name,
+      startDate,
+      endDate,
+      weeksNumber: scheda.durata_settimane || scheda.giorni.length,
+      giorni: scheda.giorni,
+    });
+
+    return res.json({ ok: true, data: result });
+  } catch (err) {
+    console.error("IMPORT ERROR:", err);
+    return res.status(500).json({ ok: false, error: err.message || "Errore durante il salvataggio" });
   }
 });
 
