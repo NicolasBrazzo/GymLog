@@ -2,7 +2,7 @@ const supabase = require("../config/db_connection");
 
 const tableName = "workout_sheets";
 
-const getSchedeByUserId = async (userId) => {
+const getWorkoutSheetsByUserId = async (userId) => {
   const { data, error } = await supabase
     .from(tableName)
     .select("*")
@@ -14,7 +14,19 @@ const getSchedeByUserId = async (userId) => {
   return data ?? [];
 };
 
-const saveScheda = async (userId, { name, startDate, endDate, weeksNumber, giorni }) => {
+const getWorkoutDayBySheetId = async (sheetId) => {
+  const { data, error } = await supabase
+    .from("workout_days")
+    .select("*")
+    .eq("workout_sheet_id", sheetId)
+    .order("order_index", { ascending: true });
+
+  if (error) throw new Error("DATABASE_GET_GIORNI_ERROR");
+
+  return data ?? [];
+};
+
+const saveWorkoutSheet = async (userId, { name, startDate, endDate, weeksNumber, giorni }) => {
   const { data: sheet, error: sheetError } = await supabase
     .from("workout_sheets")
     .insert({ name, user_id: userId, start_date: startDate, end_date: endDate || null, weeks_number: weeksNumber })
@@ -85,6 +97,7 @@ const saveScheda = async (userId, { name, startDate, endDate, weeksNumber, giorn
 };
 
 module.exports = {
-  getSchedeByUserId,
-  saveScheda,
+  getWorkoutSheetsByUserId,
+  getWorkoutDayBySheetId,
+  saveWorkoutSheet,
 };

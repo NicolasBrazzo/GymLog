@@ -2,17 +2,34 @@ const express = require("express");
 const multer = require("multer");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const protect = require("../middleware/auth");
-const { getSchedeByUserId, saveScheda } = require("../models/schede.model");
+const { saveWorkoutSheet, getWorkoutSheetsByUserId, getWorkoutDayBySheetId } = require("../models/schede.model");
 
 const router = express.Router();
 
 router.get("/", protect, async (req, res) => {
   try {
-    const schede = await getSchedeByUserId(req.user.sub);
+    const schede = await getWorkoutSheetsByUserId(req.user.sub);
     return res.json({ ok: true, data: schede });
   } catch (err) {
-    console.error("GET SCHEDE ERROR:", err);
+    console.error("GET WORKOUT SHEETS ERROR:", err);
     return res.status(500).json({ ok: false, error: "Errore nel recupero delle schede" });
+  }
+});
+
+// Recupero i singoli giorni di una scheda (usato per dettaglio scheda)
+router.get("/:id/giorni", protect, async (req, res) => {
+  try {
+    const sheetId = req.params.id;
+    const schede = await getWorkoutSheetsByUserId(req.user.sub);
+    const sheet = schede.find(s => s.id === sheetId);
+    if (!sheet) {
+      return res.status(404).json({ ok: false, error: "Scheda non trovata" });
+    }
+    const giorni = await getWorkoutDayBySheetId(sheetId);
+    return res.json({ ok: true, data: giorni });
+  } catch (err) {
+    console.error("GET GIORNI ERROR:", err);
+    return res.status(500).json({ ok: false, error: "Errore nel recupero dei giorni della scheda" });
   }
 });
 
@@ -143,7 +160,7 @@ router.post("/import", protect, async (req, res) => {
       return res.status(400).json({ ok: false, error: "Campi obbligatori: name, startDate" });
     }
 
-    const result = await saveScheda(req.user.sub, {
+    const result = await saveWorkoutSheet(req.user.sub, {
       name,
       startDate,
       endDate,
